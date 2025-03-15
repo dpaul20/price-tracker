@@ -101,7 +101,7 @@ export default async function HomePage() {
             </div>
             <h3 className="text-xl font-bold">Track Prices</h3>
             <p className="text-muted-foreground">
-              We'll monitor prices and keep a history of changes
+              We&apos;ll monitor prices and keep a history of changes
             </p>
           </div>
           <div className="flex flex-col items-center text-center space-y-2">

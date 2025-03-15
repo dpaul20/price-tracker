@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input"
 import { trackProduct } from "@/lib/actions"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle, CheckCircle2, Loader2 } from "lucide-react"
+import { logger } from "@/lib/logger"
 
 const formSchema = z.object({
   url: z.string().url("Please enter a valid URL"),
@@ -49,6 +50,7 @@ export function TrackProductForm() {
         }, 2000)
       }
     } catch (error) {
+      logger.error("Error tracking product:", error)
       setResult({
         success: false,
         error: "An unexpected error occurred. Please try again.",

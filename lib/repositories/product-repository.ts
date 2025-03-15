@@ -95,6 +95,7 @@ export class ProductRepository {
       const product = await this.findById(id);
       if (!product) return null;
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const updateData: any = {};
 
       if (input.name !== undefined) {

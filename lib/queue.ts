@@ -60,6 +60,7 @@ setupRecurringJobs().catch((err) =>
 const priceUpdateWorker = new Worker(
   "price-updates",
   async (job) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { productId, priority } = job.data;
 
     try {
@@ -201,6 +202,7 @@ export async function scheduleProductUpdates(batchSize = 50) {
 }
 
 // Función mejorada para calcular prioridad
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function calculatePriority(product: any): number {
   const now = new Date();
   const hoursSinceLastCheck =
@@ -242,6 +244,7 @@ function calculateDomainDelay(url: string): number {
     // Retraso entre 2-5 segundos para otros dominios
     return 2000 + Math.random() * 3000;
   } catch (error) {
+    logger.error(`Error al parsear URL: ${(error as Error).message}`);
     // Si hay error al parsear la URL, usar retraso predeterminado
     return 3000;
   }

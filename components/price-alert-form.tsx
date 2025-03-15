@@ -11,6 +11,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle, CheckCircle2, Loader2 } from "lucide-react"
 import { formatCurrency } from "@/lib/utils"
 import { createPriceAlert } from "@/lib/actions"
+import { logger } from "@/lib/logger"
 
 interface PriceAlertFormProps {
   productId: string
@@ -52,6 +53,7 @@ export function PriceAlertForm({ productId, currentPrice }: PriceAlertFormProps)
       const response = await createPriceAlert(productId, userId, values.targetPrice)
       setResult(response)
     } catch (error) {
+      logger.error("Error creating price alert:", error)
       setResult({
         success: false,
         error: "An unexpected error occurred. Please try again.",

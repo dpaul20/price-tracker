@@ -5,12 +5,14 @@ import { Store } from "@prisma/client"
 export interface CreateStoreInput {
   name: string
   url: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   scrapeConfig?: any
 }
 
 export interface UpdateStoreInput {
   name?: string
   url?: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   scrapeConfig?: any
 }
 

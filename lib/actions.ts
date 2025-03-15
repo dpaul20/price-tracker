@@ -14,6 +14,7 @@ const storeRepository = new StoreRepository()
 const productRepository = new ProductRepository()
 const priceHistoryRepository = new PriceHistoryRepository()
 const priceAlertRepository = new PriceAlertRepository()
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const scrapingLogRepository = new ScrapingLogRepository()
 
 export async function trackProduct(url: string) {

@@ -13,6 +13,7 @@ export async function GET(request: Request) {
     }
 
     // Obtener días para el informe (predeterminado: 7 días)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const days = Number.parseInt(searchParams.get("days") || "7", 10)
 
     // Generar informe

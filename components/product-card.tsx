@@ -29,12 +29,6 @@ export default async function ProductCard({
     product
   );
 
-  const badgeVariant = priceDecreased 
-    ? "secondary" 
-    : priceIncreased 
-      ? "destructive" 
-      : "outline";
-
   return (
     <Card className="overflow-hidden">
       <Link href={`/products/${product.id}`}>

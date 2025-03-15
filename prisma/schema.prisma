@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Store {
+  id           String    @id @default(cuid())
+  name         String
+  url          String
+  scrapeConfig Json? // Configuración específica para scraping de esta tienda
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  products     Product[]
+}
+
+model Product {
+  id            String         @id @default(cuid())
+  url           String         @unique
+  name          String
+  image         String?
+  currentPrice  Float
+  previousPrice Float?
+  storeId       String
+  store         Store          @relation(fields: [storeId], references: [id])
+  lastChecked   DateTime
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  priceHistory  PriceHistory[]
+  priceAlerts   PriceAlert[]
+}
+
+model PriceHistory {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  price     Float
+  timestamp DateTime
+  createdAt DateTime @default(now())
+
+  @@index([productId, timestamp])
+}
+
+model User {
+  id          String       @id @default(cuid())
+  email       String       @unique
+  name        String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  priceAlerts PriceAlert[]
+}
+
+model PriceAlert {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  productId   String
+  product     Product   @relation(fields: [productId], references: [id])
+  targetPrice Float
+  triggered   Boolean   @default(false)
+  triggeredAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([userId, productId])
+  @@index([productId, targetPrice, triggered])
+}
+
+model ScrapingLog {
+  id           String   @id @default(cuid())
+  url          String
+  domain       String
+  success      Boolean
+  errorMessage String?
+  timestamp    DateTime @default(now())
+
+  @@index([domain, success])
+  @@index([timestamp])
+}

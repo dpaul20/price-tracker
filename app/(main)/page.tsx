@@ -1,11 +1,12 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { fetchLatestProducts } from "@/lib/products"
-import ProductCard from "@/components/product-card"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+
+import ProductCard from "@/components/product-card";
+import { ProductRepository } from "@/lib/repositories/product-repository";
 
 export default async function HomePage() {
-  const latestProducts = await fetchLatestProducts()
-
+  const productRepository = new ProductRepository();
+  const latestProducts = await productRepository.getLatestProducts(6);
   return (
     <div className="container py-8">
       <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
@@ -14,7 +15,8 @@ export default async function HomePage() {
             Track prices, save money
           </h1>
           <p className="max-w-[750px] text-lg text-muted-foreground sm:text-xl">
-            Monitor product prices across multiple stores and get notified when they drop.
+            Monitor product prices across multiple stores and get notified when
+            they drop.
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-4">
@@ -43,7 +45,9 @@ export default async function HomePage() {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <p className="text-muted-foreground mb-4">No products tracked yet</p>
+            <p className="text-muted-foreground mb-4">
+              No products tracked yet
+            </p>
             <Button asChild>
               <Link href="/track">Track Your First Product</Link>
             </Button>
@@ -73,7 +77,9 @@ export default async function HomePage() {
               </svg>
             </div>
             <h3 className="text-xl font-bold">Add Products</h3>
-            <p className="text-muted-foreground">Enter the URL of any product you want to track</p>
+            <p className="text-muted-foreground">
+              Enter the URL of any product you want to track
+            </p>
           </div>
           <div className="flex flex-col items-center text-center space-y-2">
             <div className="bg-primary/10 p-4 rounded-full">
@@ -94,7 +100,9 @@ export default async function HomePage() {
               </svg>
             </div>
             <h3 className="text-xl font-bold">Track Prices</h3>
-            <p className="text-muted-foreground">We'll monitor prices and keep a history of changes</p>
+            <p className="text-muted-foreground">
+              We'll monitor prices and keep a history of changes
+            </p>
           </div>
           <div className="flex flex-col items-center text-center space-y-2">
             <div className="bg-primary/10 p-4 rounded-full">
@@ -114,11 +122,12 @@ export default async function HomePage() {
               </svg>
             </div>
             <h3 className="text-xl font-bold">Get Alerts</h3>
-            <p className="text-muted-foreground">Set price alerts and get notified when prices drop</p>
+            <p className="text-muted-foreground">
+              Set price alerts and get notified when prices drop
+            </p>
           </div>
         </div>
       </section>
     </div>
-  )
+  );
 }
-

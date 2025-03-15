@@ -2,7 +2,8 @@ import { NextResponse } from "next/server"
 import { PriceAnalytics } from "@/lib/analytics"
 import { logger } from "@/lib/logger"
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const productId = params.id
 

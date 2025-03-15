@@ -7,7 +7,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex min-h-screen flex-col bg-gradient-to-b from-background to-background/95">
+    <div className="flex flex-col min-h-screen px-4 mx-auto">
       <Header />
       <main className="flex-1 container mx-auto px-4 py-6 md:py-8 lg:py-12">
         {children}

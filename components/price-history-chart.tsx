@@ -1,45 +1,56 @@
-"use client"
+"use client";
 
-import { useTheme } from "next-themes"
-import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
-import { Card } from "@/components/ui/card"
-import { formatCurrency } from "@/lib/utils"
+import { useTheme } from "next-themes";
+import {
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import { Card } from "@/components/ui/card";
+import { formatCurrency } from "@/lib/utils";
+import { PriceHistory } from "@prisma/client";
 
 interface PriceHistoryChartProps {
-  data: {
-    date: string
-    price: number
-  }[]
+  data: PriceHistory[];
 }
 
-export function PriceHistoryChart({ data }: PriceHistoryChartProps) {
-  const { theme } = useTheme()
+export function PriceHistoryChart({ data }: Readonly<PriceHistoryChartProps>) {
+  const { theme } = useTheme();
 
   // Format the data for the chart
   const chartData = data.map((item) => ({
-    date: new Date(item.date).toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+    date: new Date(item.createdAt).toLocaleDateString("es-AR", {
+      month: "short",
+      day: "numeric",
+    }),
     price: item.price,
-  }))
+  }));
 
   // Calculate min and max for the y-axis
-  const prices = data.map((item) => item.price)
-  const minPrice = Math.min(...prices) * 0.95 // 5% below min
-  const maxPrice = Math.max(...prices) * 1.05 // 5% above max
+  const prices = data.map((item) => item.price);
+  const minPrice = Math.min(...prices) * 0.95; // 5% below min
+  const maxPrice = Math.max(...prices) * 1.05; // 5% above max
 
   return (
     <div className="w-full h-[300px]">
       {data.length > 1 ? (
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={chartData} margin={{ top: 5, right: 10, left: 10, bottom: 0 }}>
+          <LineChart
+            data={chartData}
+            margin={{ top: 5, right: 10, left: 10, bottom: 0 }}
+          >
             <XAxis
               dataKey="date"
-              stroke={theme === "dark" ? "#888888" : "#888888"}
+              stroke={theme === "dark" ? "#10b981" : "#059669"}
               fontSize={12}
               tickLine={false}
               axisLine={false}
             />
             <YAxis
-              stroke={theme === "dark" ? "#888888" : "#888888"}
+              stroke={theme === "dark" ? "#10b981" : "#059669"}
               fontSize={12}
               tickLine={false}
               axisLine={false}
@@ -51,18 +62,22 @@ export function PriceHistoryChart({ data }: PriceHistoryChartProps) {
                 if (active && payload && payload.length) {
                   return (
                     <Card className="p-2 shadow-lg border">
-                      <div className="text-sm font-medium">{payload[0].payload.date}</div>
-                      <div className="text-sm font-bold">{formatCurrency(payload[0].value as number)}</div>
+                      <div className="text-sm font-medium">
+                        {payload[0].payload.date}
+                      </div>
+                      <div className="text-sm font-bold">
+                        {formatCurrency(payload[0].value as number)}
+                      </div>
                     </Card>
-                  )
+                  );
                 }
-                return null
+                return null;
               }}
             />
             <Line
               type="monotone"
               dataKey="price"
-              stroke={theme === "dark" ? "#10b981" : "#10b981"}
+              stroke={theme === "dark" ? "#10b981" : "#059669"}
               strokeWidth={2}
               dot={{ r: 4, strokeWidth: 2 }}
               activeDot={{ r: 6, strokeWidth: 2 }}
@@ -71,10 +86,11 @@ export function PriceHistoryChart({ data }: PriceHistoryChartProps) {
         </ResponsiveContainer>
       ) : (
         <div className="flex items-center justify-center h-full">
-          <p className="text-muted-foreground">Not enough data to display chart</p>
+          <p className="text-muted-foreground">
+            Not enough data to display chart
+          </p>
         </div>
       )}
     </div>
-  )
+  );
 }
-

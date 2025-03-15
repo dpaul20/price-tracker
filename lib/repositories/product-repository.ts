@@ -35,12 +35,17 @@ export class ProductRepository {
     }
   }
 
-  async findById(id: string): Promise<Product | null> {
+  async findById(id: string): Promise<Product & { store: { name: string } }> {
     try {
       const product = await prisma.product.findUnique({
         where: { id },
         include: { store: true },
       });
+
+      if (!product) {
+        throw new Error(`Product with ID ${id} not found`);
+      }
+
       return product;
     } catch (error) {
       logger.error(`Error fetching product ${id}:`, error);

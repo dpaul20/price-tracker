@@ -1,10 +1,11 @@
-import { fetchLatestProducts } from "@/lib/products";
 import ProductCard from "@/components/product-card";
 import { Button } from "@/components/ui/button";
+import { ProductRepository } from "@/lib/repositories/product-repository";
 import Link from "next/link";
 
 export default async function ProductsPage() {
-  const products = await fetchLatestProducts();
+  const productRepository = new ProductRepository();
+  const products = await productRepository.findAll();
 
   return (
     <div className="container py-8">

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getProductDetails, getProductPriceHistory } from "@/lib/products";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -15,6 +14,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { formatCurrency } from "@/lib/utils";
 import { PriceHistoryChart } from "@/components/price-history-chart";
 import { PriceAlertForm } from "@/components/price-alert-form";
+import { ProductRepository } from "@/lib/repositories/product-repository";
+import { PriceHistoryRepository } from "@/lib/repositories/price-history-repository";
 
 interface ProductPageProps {
   params: {
@@ -22,17 +23,33 @@ interface ProductPageProps {
   };
 }
 
-export default async function ProductPage({
-  params,
-}: Readonly<ProductPageProps>) {
+export default async function ProductPage(props: Readonly<ProductPageProps>) {
   try {
-    // asynchronous access of `params.id`.
-    const { id } = params;
-    const product = await getProductDetails(id);
-    const priceHistory = await getProductPriceHistory(id, "30d");
+    const { id } = await props.params;
+    const productRepository = new ProductRepository();
+    const priceHistoryRepository = new PriceHistoryRepository();
 
-    const priceIncreased = product.percentageChange > 0;
-    const priceDecreased = product.percentageChange < 0;
+    const product = await productRepository.findById(id);
+    if (!product) {
+      notFound();
+    }
+
+    const priceDecreased = product.previousPrice
+      ? product.previousPrice > product.currentPrice
+      : false;
+    const priceIncreased = product.previousPrice
+      ? product.previousPrice < product.currentPrice
+      : false;
+
+    const percentageChange = await productRepository.calculatePercentageChange(
+      product
+    );
+
+    const lowestPrice = await priceHistoryRepository.getLowestPrice(id);
+
+    const highestPrice = await priceHistoryRepository.getHighestPrice(id);
+
+    const priceHistory = await priceHistoryRepository.findByProductId(id);
 
     return (
       <div className="container py-8">
@@ -62,24 +79,23 @@ export default async function ProductPage({
                 )}
               </div>
 
-              {product.percentageChange !== 0 && (
+              {percentageChange !== 0 && (
                 <Badge
                   variant={
                     priceDecreased
-                      ? "success"
+                      ? "secondary"
                       : priceIncreased
                       ? "destructive"
                       : "outline"
                   }
-                  className="text-sm"
+                  className="mt-2"
                 >
-                  {priceDecreased ? "↓" : "↑"}{" "}
-                  {Math.abs(product.percentageChange)}%
+                  {priceDecreased ? "↓" : "↑"} {Math.abs(percentageChange)}%
                 </Badge>
               )}
 
               <p className="text-sm text-muted-foreground">
-                Last updated: {product.lastUpdated}
+                Last updated: {product.lastChecked.toLocaleString()}
               </p>
 
               <div className="pt-4">
@@ -124,9 +140,7 @@ export default async function ProductPage({
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">
-                        {formatCurrency(
-                          product.lowestPrice || product.currentPrice
-                        )}
+                        {formatCurrency(lowestPrice)}
                       </div>
                     </CardContent>
                   </Card>
@@ -138,9 +152,7 @@ export default async function ProductPage({
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">
-                        {formatCurrency(
-                          product.highestPrice || product.currentPrice
-                        )}
+                        {formatCurrency(highestPrice)}
                       </div>
                     </CardContent>
                   </Card>
@@ -168,6 +180,7 @@ export default async function ProductPage({
       </div>
     );
   } catch (error) {
+    console.error(error);
     notFound();
   }
 }

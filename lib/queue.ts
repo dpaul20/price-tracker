@@ -1,5 +1,4 @@
 import { Queue, Worker } from "bullmq";
-import { Redis } from "@upstash/redis";
 import { ProductRepository } from "./repositories/product-repository";
 import { PriceHistoryRepository } from "./repositories/price-history-repository";
 import { PriceAlertRepository } from "./repositories/price-alert-repository";
@@ -14,21 +13,18 @@ const priceAlertRepository = new PriceAlertRepository();
 const scrapingLogRepository = new ScrapingLogRepository();
 
 // Initialize Redis client with Upstash
-const redis = Redis.fromEnv();
+// const redis = Redis.fromEnv();
 
 // Create connection for BullMQ
-// const connection = {
-//   client: redis,
-//   // Add any additional connection options if needed
-// };
+const connection = {
+  host: process.env.REDIS_HOST ?? "localhost",
+  port: Number(process.env.REDIS_PORT) || 6379,
+  password: process.env.REDIS_PASSWORD,
+};
 
 // Create queues
 export const priceUpdateQueue = new Queue("price-updates", {
-  connection: {
-    host: process.env.REDIS_HOST ?? "localhost",
-    port: Number(process.env.REDIS_PORT) || 6379,
-    password: process.env.REDIS_PASSWORD,
-  },
+  connection,
   defaultJobOptions: {
     attempts: 3,
     backoff: {
@@ -255,11 +251,11 @@ function calculateDomainDelay(url: string): number {
 }
 
 // Manejar eventos de la cola
-priceUpdateQueue.on("completed", (job) => {
+priceUpdateWorker.on("completed", (job) => {
   logger.info(`Trabajo completado: ${job.id}`);
 });
 
-priceUpdateQueue.on("failed", (job, error) => {
+priceUpdateWorker.on("failed", (job, error) => {
   logger.error(`Trabajo fallido: ${job?.id}, Error: ${error.message}`);
 });
 

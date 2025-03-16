@@ -17,14 +17,18 @@ const scrapingLogRepository = new ScrapingLogRepository();
 const redis = Redis.fromEnv();
 
 // Create connection for BullMQ
-const connection = {
-  client: redis,
-  // Add any additional connection options if needed
-};
+// const connection = {
+//   client: redis,
+//   // Add any additional connection options if needed
+// };
 
 // Create queues
 export const priceUpdateQueue = new Queue("price-updates", {
-  connection,
+  connection: {
+    host: process.env.REDIS_HOST ?? "localhost",
+    port: Number(process.env.REDIS_PORT) || 6379,
+    password: process.env.REDIS_PASSWORD,
+  },
   defaultJobOptions: {
     attempts: 3,
     backoff: {
@@ -138,7 +142,7 @@ const priceUpdateWorker = new Worker(
 
         return { updated: false, price: newPrice };
       }
-    } catch (error) {
+    } catch (error: any) {
       logger.error(
         `Error procesando producto ${productId}: ${(error as Error).message}`
       );
@@ -193,7 +197,7 @@ export async function scheduleProductUpdates(batchSize = 50) {
     }
 
     return { scheduled: products.length };
-  } catch (error) {
+  } catch (error: any) {
     logger.error(
       `Error programando actualizaciones: ${(error as Error).message}`
     );
@@ -243,7 +247,7 @@ function calculateDomainDelay(url: string): number {
 
     // Retraso entre 2-5 segundos para otros dominios
     return 2000 + Math.random() * 3000;
-  } catch (error) {
+  } catch (error: any) {
     logger.error(`Error al parsear URL: ${(error as Error).message}`);
     // Si hay error al parsear la URL, usar retraso predeterminado
     return 3000;

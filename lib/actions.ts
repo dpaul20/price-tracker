@@ -84,7 +84,7 @@ export async function trackProduct(url: string) {
       message: "Producto agregado correctamente",
       productId: product.id,
     }
-  } catch (error) {
+  } catch (error: any) {
     logger.error("Error al rastrear producto:", error)
     return {
       success: false,
@@ -118,7 +118,7 @@ export async function createPriceAlert(productId: string, userId: string, target
       message: "Alerta de precio creada correctamente",
       alertId: alert.id,
     }
-  } catch (error) {
+  } catch (error: any) {
     logger.error("Error al crear alerta de precio:", error)
     return {
       success: false,
@@ -164,7 +164,7 @@ export async function getProductDetails(productId: string) {
         lastUpdated,
       },
     }
-  } catch (error) {
+  } catch (error: any) {
     logger.error(`Error al obtener detalles del producto ${productId}:`, error)
     return {
       success: false,
@@ -205,7 +205,7 @@ export async function getProductPriceHistory(productId: string, period = "30d") 
         price: record.price,
       })),
     }
-  } catch (error) {
+  } catch (error: any) {
     logger.error(`Error al obtener historial de precios para ${productId}:`, error)
     return {
       success: false,
@@ -244,7 +244,7 @@ export async function getLatestProducts(limit = 6) {
       success: true,
       products: productsWithChange,
     }
-  } catch (error) {
+  } catch (error: any) {
     logger.error("Error al obtener productos recientes:", error)
     return {
       success: false,

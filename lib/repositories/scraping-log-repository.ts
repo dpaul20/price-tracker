@@ -22,7 +22,7 @@ export class ScrapingLogRepository {
       });
 
       return log;
-    } catch (error) {
+    } catch (error: any) {
       logger.error("Error creating scraping log:", error);
       throw error;
     }
@@ -58,7 +58,7 @@ export class ScrapingLogRepository {
           Number.parseFloat(stat.success_rate).toFixed(2)
         ),
       }));
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error getting scraping stats by domain:`, error);
       throw error;
     }
@@ -77,7 +77,7 @@ export class ScrapingLogRepository {
           (stat) => stat.total >= 5 && stat.successRate < successRateThreshold
         )
         .sort((a, b) => a.successRate - b.successRate);
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error identifying problematic domains:`, error);
       throw error;
     }

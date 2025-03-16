@@ -31,7 +31,7 @@ export function StoreComparisonCard({ productName }: StoreComparisonProps) {
 
         const data = await response.json()
         setComparison(data)
-      } catch (error) {
+      } catch (error: any) {
         setError(error.message)
       } finally {
         setLoading(false)
@@ -106,7 +106,7 @@ export function StoreComparisonCard({ productName }: StoreComparisonProps) {
                       <Store className="h-4 w-4 mr-2 text-muted-foreground" />
                       {store.storeName}
                       {isCheapest && (
-                        <Badge variant="success" className="ml-2">
+                        <Badge variant="secondary" className="ml-2">
                           Más barato
                         </Badge>
                       )}

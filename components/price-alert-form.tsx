@@ -52,7 +52,7 @@ export function PriceAlertForm({ productId, currentPrice }: PriceAlertFormProps)
 
       const response = await createPriceAlert(productId, userId, values.targetPrice)
       setResult(response)
-    } catch (error) {
+    } catch (error: any) {
       logger.error("Error creating price alert:", error)
       setResult({
         success: false,

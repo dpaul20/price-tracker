@@ -17,7 +17,7 @@ export class ScrapingMonitor {
           timestamp: new Date(),
         },
       })
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error registrando intento de scraping: ${error.message}`)
     }
   }
@@ -83,7 +83,7 @@ export class ScrapingMonitor {
         ...stats,
         successRate: Number.parseFloat(stats.successRate.toFixed(2)),
       }))
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error obteniendo estadísticas de dominio: ${error.message}`)
       return []
     }
@@ -97,7 +97,7 @@ export class ScrapingMonitor {
       return stats
         .filter((stat) => stat.total >= 5 && stat.successRate < successRateThreshold)
         .sort((a, b) => a.successRate - b.successRate)
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error identificando dominios problemáticos: ${error.message}`)
       return []
     }
@@ -125,7 +125,7 @@ export class ScrapingMonitor {
         domainStats: stats,
         problematicDomains,
       }
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error generando informe de rendimiento: ${error.message}`)
       throw error
     }

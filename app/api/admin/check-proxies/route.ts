@@ -28,7 +28,8 @@ export async function POST(request: Request) {
       working: workingProxies.length,
       workingProxies,
     })
-  } catch (error) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
     logger.error("Error verificando proxies:", error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }

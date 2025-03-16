@@ -29,7 +29,7 @@ export class ProductRepository {
         skip: offset,
       });
       return products;
-    } catch (error) {
+    } catch (error: any) {
       logger.error("Error fetching products:", error);
       throw error;
     }
@@ -47,7 +47,7 @@ export class ProductRepository {
       }
 
       return product;
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error fetching product ${id}:`, error);
       throw error;
     }
@@ -60,7 +60,7 @@ export class ProductRepository {
         include: { store: true },
       });
       return product;
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error fetching product by URL ${url}:`, error);
       throw error;
     }
@@ -84,7 +84,7 @@ export class ProductRepository {
         },
       });
       return product;
-    } catch (error) {
+    } catch (error: any) {
       logger.error("Error creating product:", error);
       throw error;
     }
@@ -129,7 +129,7 @@ export class ProductRepository {
       await invalidateProductCache(id);
 
       return updatedProduct;
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error updating product ${id}:`, error);
       throw error;
     }
@@ -145,7 +145,7 @@ export class ProductRepository {
       });
 
       return !!result;
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error deleting product ${id}:`, error);
       throw error;
     }
@@ -159,7 +159,7 @@ export class ProductRepository {
         take: limit,
       });
       return products;
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error fetching latest products:`, error);
       throw error;
     }

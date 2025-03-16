@@ -217,7 +217,7 @@ export async function scrapeProductInfo(url: string) {
         image: config.imageSelector,
       },
     };
-  } catch (error) {
+  } catch (error: any) {
     logger.error(`Error al hacer scraping de ${url}: ${error.message}`);
     return null;
   }
@@ -357,7 +357,7 @@ async function scrapeWithBrowser(url, config) {
       logger.warn(`No se pudo encontrar el precio en ${url}`);
       return null;
     }
-  } catch (error) {
+  } catch (error: any) {
     logger.error(`Error con Puppeteer en ${url}: ${error.message}`);
     return null;
   } finally {

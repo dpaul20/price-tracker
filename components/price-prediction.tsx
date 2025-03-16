@@ -29,7 +29,7 @@ export function PricePredictionCard({ productId }: PricePredictionProps) {
 
         const data = await response.json()
         setPrediction(data)
-      } catch (error) {
+      } catch (error: any) {
         setError(error.message)
       } finally {
         setLoading(false)

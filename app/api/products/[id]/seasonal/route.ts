@@ -14,7 +14,7 @@ export async function GET(request: Request, props: { params: Promise<{ id: strin
     const analysis = await PriceAnalytics.getSeasonalAnalysis(productId)
 
     return NextResponse.json(analysis)
-  } catch (error) {
+  } catch (error: any) {
     logger.error(`Error obteniendo análisis estacional para producto ${params.id}:`, error)
     return NextResponse.json({ error: "No hay suficientes datos para generar un análisis estacional" }, { status: 404 })
   }

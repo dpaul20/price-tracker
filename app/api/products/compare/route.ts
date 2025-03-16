@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     const comparison = await PriceAnalytics.compareStores(productName)
 
     return NextResponse.json(comparison)
-  } catch (error) {
+  } catch (error: any) {
     logger.error(`Error comparando tiendas:`, error)
     return NextResponse.json({ error: "No se pudieron encontrar productos similares" }, { status: 404 })
   }

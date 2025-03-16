@@ -49,7 +49,7 @@ export function TrackProductForm() {
           router.push(`/products/${response.productId}`)
         }, 2000)
       }
-    } catch (error) {
+    } catch (error: any) {
       logger.error("Error tracking product:", error)
       setResult({
         success: false,

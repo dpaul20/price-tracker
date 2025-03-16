@@ -39,13 +39,13 @@ export async function checkPriceAlerts(productId: string, newPrice: number) {
         });
 
         logger.info(`Alerta ${alert.id} activada para usuario ${alert.userId}`);
-      } catch (error) {
+      } catch (error: any) {
         logger.error(`Error procesando alerta ${alert.id}:`, error);
       }
     }
 
     return { processed: alerts.length };
-  } catch (error) {
+  } catch (error: any) {
     logger.error(
       `Error verificando alertas para producto ${productId}:`,
       error

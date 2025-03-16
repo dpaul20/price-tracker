@@ -119,7 +119,7 @@ export class ProxyManager {
 
     try {
       return await this.provider.getProxy()
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error obteniendo proxy: ${error.message}`)
       return null
     }
@@ -132,7 +132,7 @@ export class ProxyManager {
 
     try {
       await this.provider.releaseProxy(proxy, success)
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error liberando proxy: ${error.message}`)
     }
   }

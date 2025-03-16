@@ -20,7 +20,8 @@ export async function GET(request: Request) {
     const report = await ScrapingMonitor.generatePerformanceReport()
 
     return NextResponse.json(report)
-  } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
     logger.error("Error generando estadísticas de scraping:", error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }

@@ -5,19 +5,17 @@ import { Badge } from "@/components/ui/badge";
 import { formatCurrency } from "@/lib/utils";
 import { Product } from "@prisma/client";
 import { ProductRepository } from "@/lib/repositories/product-repository";
+import { StoreRepository } from "@/lib/repositories/store-repository";
 
 interface ProductCardProps {
-  product: Product & {
-    store: {
-      name: string;
-    };
-  };
+  product: Product;
 }
 
 export default async function ProductCard({
   product,
 }: Readonly<ProductCardProps>) {
   const productRepository = new ProductRepository();
+  const storeRepository = new StoreRepository();
   const priceDecreased = product.previousPrice
     ? product.previousPrice > product.currentPrice
     : false;
@@ -28,6 +26,8 @@ export default async function ProductCard({
   const percentageChange = await productRepository.calculatePercentageChange(
     product
   );
+
+  const store = await storeRepository.findById(product.storeId);
 
   return (
     <Card className="overflow-hidden">
@@ -42,7 +42,7 @@ export default async function ProductCard({
         </div>
         <CardContent className="p-4">
           <h3 className="font-semibold line-clamp-1">{product.name}</h3>
-          <p className="text-sm text-muted-foreground">{product.store.name}</p>
+          <p className="text-sm text-muted-foreground">{store?.name}</p>
 
           <div className="mt-2 flex items-baseline gap-2">
             <span className="font-bold">

@@ -18,7 +18,7 @@ export class PriceHistoryRepository {
       });
 
       return history;
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error fetching price history for product ${productId}:`, error)
       throw error
     }
@@ -38,7 +38,7 @@ export class PriceHistoryRepository {
       });
 
       return history;
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error fetching price history for product ${productId} in date range:`, error)
       throw error
     }
@@ -58,7 +58,7 @@ export class PriceHistoryRepository {
       });
 
       return history;
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error creating price history for product ${input.productId}:`, error)
       throw error
     }
@@ -72,7 +72,7 @@ export class PriceHistoryRepository {
       });
 
       return result._min.price;
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error getting lowest price for product ${productId}:`, error)
       throw error
     }
@@ -86,7 +86,7 @@ export class PriceHistoryRepository {
       });
 
       return result._max.price;
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error getting highest price for product ${productId}:`, error)
       throw error
     }

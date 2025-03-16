@@ -16,7 +16,7 @@ export async function checkProxy(proxy: string): Promise<boolean> {
     }
 
     return isWorking
-  } catch (error) {
+  } catch (error: any) {
     logger.error(`Error verificando proxy ${proxy}: ${error.message}`)
     return false
   }

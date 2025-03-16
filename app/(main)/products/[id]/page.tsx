@@ -17,15 +17,13 @@ import { PriceAlertForm } from "@/components/price-alert-form";
 import { ProductRepository } from "@/lib/repositories/product-repository";
 import { PriceHistoryRepository } from "@/lib/repositories/price-history-repository";
 
-interface ProductPageProps {
-  params: {
-    id: string;
-  };
-}
-
-export default async function ProductPage(props: Readonly<ProductPageProps>) {
+export default async function ProductPage({
+  params,
+}: Readonly<{
+  params: Promise<{ id: string }>;
+}>) {
   try {
-    const { id } = await props.params;
+    const { id } = await params;
     const productRepository = new ProductRepository();
     const priceHistoryRepository = new PriceHistoryRepository();
 
@@ -179,7 +177,8 @@ export default async function ProductPage(props: Readonly<ProductPageProps>) {
         </div>
       </div>
     );
-  } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
     console.error(error);
     notFound();
   }

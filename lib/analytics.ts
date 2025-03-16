@@ -107,7 +107,7 @@ export class PriceAnalytics {
           bestTimeToBuy,
           trend,
         }
-      } catch (error) {
+      } catch (error: any) {
         logger.error(`Error en predicción de precio para ${productId}: ${error.message}`)
         throw error
       }
@@ -287,7 +287,7 @@ export class PriceAnalytics {
           bestMonthToBuy: bestMonth,
           worstMonthToBuy: worstMonth,
         }
-      } catch (error) {
+      } catch (error: any) {
         logger.error(`Error en análisis estacional para ${productId}: ${error.message}`)
         throw error
       }
@@ -348,7 +348,7 @@ export class PriceAnalytics {
           productName,
           stores: storeComparisons,
         }
-      } catch (error) {
+      } catch (error: any) {
         logger.error(`Error en comparación de tiendas para "${productName}": ${error.message}`)
         throw error
       }
@@ -378,7 +378,7 @@ export class PriceAnalytics {
           await invalidateCache(key)
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error invalidando caché de análisis para ${productId}: ${error.message}`)
     }
   }

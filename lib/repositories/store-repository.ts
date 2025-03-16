@@ -23,7 +23,7 @@ export class StoreRepository {
         orderBy: { name: "asc" }
       });
       return stores;
-    } catch (error) {
+    } catch (error: any) {
       logger.error("Error fetching stores:", error)
       throw error
     }
@@ -35,7 +35,7 @@ export class StoreRepository {
         where: { id }
       });
       return store;
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error fetching store ${id}:`, error)
       throw error
     }
@@ -51,7 +51,7 @@ export class StoreRepository {
         }
       });
       return store;
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error fetching store by domain ${domain}:`, error)
       throw error
     }
@@ -67,7 +67,7 @@ export class StoreRepository {
         }
       });
       return store;
-    } catch (error) {
+    } catch (error: any) {
       logger.error("Error creating store:", error)
       throw error
     }
@@ -88,7 +88,7 @@ export class StoreRepository {
       });
 
       return updatedStore;
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error updating store ${id}:`, error)
       throw error
     }
@@ -100,7 +100,7 @@ export class StoreRepository {
         where: { id }
       });
       return true;
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error deleting store ${id}:`, error)
       throw error
     }

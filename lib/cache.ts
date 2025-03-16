@@ -37,7 +37,7 @@ export async function getCached<T>(key: string, fetcher: () => Promise<T>, ttl: 
     await redis.set(key, data, { ex: ttl })
 
     return data
-  } catch (error) {
+  } catch (error: any) {
     logger.error(`Error de caché para ${key}: ${(error as Error).message}`)
     // Si hay error en el caché, ejecutar el fetcher directamente
     return await fetcher()
@@ -47,7 +47,7 @@ export async function getCached<T>(key: string, fetcher: () => Promise<T>, ttl: 
 export async function invalidateCache(key: string): Promise<void> {
   try {
     await redis.del(key)
-  } catch (error) {
+  } catch (error: any) {
     logger.error(`Error al invalidar caché ${key}: ${(error as Error).message}`)
   }
 }
@@ -84,7 +84,7 @@ export async function invalidateProductCache(productId: string): Promise<void> {
       }
       logger.info(`Caché invalidado para producto ${productId}: ${allKeys.length} claves`)
     }
-  } catch (error) {
+  } catch (error: any) {
     logger.error(`Error al invalidar caché para producto ${productId}: ${(error as Error).message}`)
   }
 }

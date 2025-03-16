@@ -14,7 +14,7 @@ export async function GET(request: Request, props: { params: Promise<{ id: strin
     const prediction = await PriceAnalytics.predictPrice(productId)
 
     return NextResponse.json(prediction)
-  } catch (error) {
+  } catch (error: any) {
     logger.error(`Error obteniendo predicción para producto ${params.id}:`, error)
     return NextResponse.json({ error: "No hay suficientes datos para generar una predicción" }, { status: 404 })
   }

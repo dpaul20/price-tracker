@@ -23,7 +23,7 @@ export class PriceAlertRepository {
       });
 
       return alerts;
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error fetching price alerts for user ${userId}:`, error)
       throw error
     }
@@ -37,7 +37,7 @@ export class PriceAlertRepository {
       });
 
       return alerts;
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error fetching price alerts for product ${productId}:`, error)
       throw error
     }
@@ -54,7 +54,7 @@ export class PriceAlertRepository {
       });
 
       return alerts;
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error fetching active price alerts for product ${productId}:`, error)
       throw error
     }
@@ -67,7 +67,7 @@ export class PriceAlertRepository {
       });
 
       return alert;
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error fetching price alert ${id}:`, error)
       throw error
     }
@@ -85,7 +85,7 @@ export class PriceAlertRepository {
       });
 
       return alert;
-    } catch (error) {
+    } catch (error: any) {
       logger.error("Error creating price alert:", error)
       throw error
     }
@@ -106,7 +106,7 @@ export class PriceAlertRepository {
       });
 
       return updatedAlert;
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error updating price alert ${id}:`, error)
       throw error
     }
@@ -119,7 +119,7 @@ export class PriceAlertRepository {
       });
       
       return true;
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error deleting price alert ${id}:`, error)
       throw error
     }
@@ -148,7 +148,7 @@ export class PriceAlertRepository {
       }
 
       return alerts;
-    } catch (error) {
+    } catch (error: any) {
       logger.error(`Error checking alerts for product ${productId}:`, error)
       throw error
     }

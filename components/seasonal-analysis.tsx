@@ -28,7 +28,7 @@ export function SeasonalAnalysisCard({ productId }: SeasonalAnalysisProps) {
 
         const data = await response.json()
         setAnalysis(data)
-      } catch (error) {
+      } catch (error: any) {
         setError(error.message)
       } finally {
         setLoading(false)

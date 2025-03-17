@@ -5,6 +5,7 @@ import { PriceAlertRepository } from "./repositories/price-alert-repository";
 import { ScrapingLogRepository } from "./repositories/scraping-log-repository";
 import { scrapeProductInfo } from "./scraper";
 import { logger } from "./logger";
+import IORedis from "ioredis";
 
 // Repositories
 const productRepository = new ProductRepository();
@@ -12,19 +13,16 @@ const priceHistoryRepository = new PriceHistoryRepository();
 const priceAlertRepository = new PriceAlertRepository();
 const scrapingLogRepository = new ScrapingLogRepository();
 
-// Initialize Redis client with Upstash
-// const redis = Redis.fromEnv();
-
-// Create connection for BullMQ
-const connection = {
-  host: process.env.REDIS_HOST ?? "localhost",
-  port: Number(process.env.REDIS_PORT) || 6379,
-  password: process.env.REDIS_PASSWORD,
-};
+// Create an IORedis client using environment variables
+const redisClient = new IORedis(process.env.KV_URL as string, {
+  maxRetriesPerRequest: null,
+  enableReadyCheck: false, // Recommended for Upstash
+});
 
 // Create queues
 export const priceUpdateQueue = new Queue("price-updates", {
-  connection,
+  connection: redisClient,
+  prefix: "bull",
   defaultJobOptions: {
     attempts: 3,
     backoff: {
@@ -145,7 +143,7 @@ const priceUpdateWorker = new Worker(
       throw error;
     }
   },
-  { connection, concurrency: 5 }
+  { connection: redisClient, prefix: "bull", concurrency: 5 }
 );
 
 // Función para programar actualizaciones en lotes

@@ -7,6 +7,8 @@ import { scrapeProductInfo } from "./scraper";
 import { logger } from "./logger";
 import IORedis from "ioredis";
 
+const { KV_URL } = process.env;
+
 // Repositories
 const productRepository = new ProductRepository();
 const priceHistoryRepository = new PriceHistoryRepository();
@@ -14,7 +16,7 @@ const priceAlertRepository = new PriceAlertRepository();
 const scrapingLogRepository = new ScrapingLogRepository();
 
 // Create an IORedis client using environment variables
-const redisClient = new IORedis(process.env.KV_URL as string, {
+const redisClient = new IORedis(KV_URL as string, {
   maxRetriesPerRequest: null,
   enableReadyCheck: false, // Recommended for Upstash
 });

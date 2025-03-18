@@ -6,14 +6,14 @@ export async function GET(request: Request) {
   try {
     // Verificar clave secreta para proteger el endpoint
     const { searchParams } = new URL(request.url);
-    const secret = searchParams.get("secret");
+    // const secret = searchParams.get("secret");
 
-    if (secret !== process.env.CRON_SECRET) {
-      logger.warn(
-        "Intento de acceso no autorizado al endpoint de actualización de precios"
-      );
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    // if (secret !== process.env.CRON_SECRET) {
+    //   logger.warn(
+    //     "Intento de acceso no autorizado al endpoint de actualización de precios"
+    //   );
+    //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // }
 
     // Obtener tamaño del lote de los parámetros o usar valor predeterminado
     const batchSize = Number.parseInt(
